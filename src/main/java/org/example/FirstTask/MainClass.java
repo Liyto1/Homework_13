@@ -32,5 +32,9 @@ public class MainClass {
         System.out.println("httpResponse.statusCode() = " + httpResponse.statusCode());
 
     }
+
+    public static void upgradeUser(){
+
+    }
 }
 
