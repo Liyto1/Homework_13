@@ -16,9 +16,19 @@ public class MainClass {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
         newUser(user);
+
+
         User updatedUser = new User( 11,"Tom Hanks","TH","REAlth@gmail.com");
         try {
             upgradeUser(updatedUser);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+        int userIdToDelete = 10;
+        try {
+            deleteUser(userIdToDelete);
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
@@ -63,6 +73,25 @@ public class MainClass {
             System.err.println("Response body: " + updateResponse.body());
         }
     }
+
+    public static void deleteUser(int userId) throws IOException, URISyntaxException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+
+        HttpRequest deleteRequest = HttpRequest.newBuilder(new URI(url + userId))
+                .DELETE()
+                .build();
+        HttpResponse<Void> deleteResponse = httpClient.send(deleteRequest, HttpResponse.BodyHandlers.discarding());
+
+        int responseCode = deleteResponse.statusCode();
+        if (responseCode >= 200 && responseCode < 300) {
+            System.out.println("User with ID " + userId + " successfully deleted. Response code: " + responseCode);
+        } else {
+            System.err.println("Failed to delete user with ID " + userId + ". Response code: " + responseCode);
+        }
+    }
+
 }
 
 
