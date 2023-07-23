@@ -16,7 +16,6 @@ public class MainClass {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
         newUser(user);
-        creationTest();
     }
 
     public static void newUser(User user) throws IOException, InterruptedException, URISyntaxException {
@@ -33,26 +32,5 @@ public class MainClass {
         System.out.println("httpResponse.statusCode() = " + httpResponse.statusCode());
 
     }
-
-    public static void creationTest() throws IOException, InterruptedException, URISyntaxException {
-
-        HttpClient httpClient = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_1_1)
-                .build();
-
-        HttpRequest getUsersRequest = HttpRequest.newBuilder(new URI(uri))
-                .GET()
-                .build();
-        HttpResponse<String> usersResponse = httpClient.send(getUsersRequest, HttpResponse.BodyHandlers.ofString());
-
-
-        User[] users = new Gson().fromJson(usersResponse.body(), User[].class);
-        int maxId = 0;
-        for (User existingUser : users) {
-            if (existingUser.getId() > maxId) {
-                maxId = existingUser.getId();
-            }
-        }
-        System.out.println("maxId = " + maxId);
-    }
 }
+
