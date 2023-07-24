@@ -7,7 +7,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;;
+import java.net.http.HttpResponse;
+import com.google.gson.reflect.TypeToken;
+import java.util.Map;
 
 
 public class MainClass {
@@ -29,6 +31,13 @@ public class MainClass {
         int userIdToDelete = 9;
         try {
             deleteUser(userIdToDelete);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            allUsersInfo();
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
@@ -92,6 +101,39 @@ public class MainClass {
         }
     }
 
+    public static void allUsersInfo() throws  IOException, URISyntaxException, InterruptedException{
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+
+        HttpRequest getAllUsers = HttpRequest.newBuilder(new URI(url))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(getAllUsers, HttpResponse.BodyHandlers.ofString());
+
+
+
+        int responseCode = response.statusCode();
+        if (responseCode == 200) {
+
+            Gson gson = new Gson();
+            User[] users = gson.fromJson(response.body(), User[].class);
+
+
+            for (User user : users) {
+                System.out.println("User ID: " + user.getId());
+                System.out.println("Name: " + user.getName());
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Email: " + user.getEmail());
+                System.out.println("------------------------");
+            }
+        } else {
+            System.err.println("Failed to get users information. Response code: " + responseCode);
+        }
+
+    }
 }
 
 
