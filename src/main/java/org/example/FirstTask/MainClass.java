@@ -18,7 +18,7 @@ public class MainClass {
         newUser(user);
 
 
-        User updatedUser = new User( 11,"Tom Hanks","TH","REAlth@gmail.com");
+        User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
         try {
             upgradeUser(updatedUser);
         } catch (IOException | InterruptedException | URISyntaxException e) {
@@ -26,7 +26,7 @@ public class MainClass {
         }
 
 
-        int userIdToDelete = 10;
+        int userIdToDelete = 9;
         try {
             deleteUser(userIdToDelete);
         } catch (IOException | InterruptedException | URISyntaxException e) {
@@ -57,7 +57,7 @@ public class MainClass {
 
 
         String updatedUserJson = new Gson().toJson(updatedUser);
-        HttpRequest updateRequest = HttpRequest.newBuilder(new URI(url + updatedUser.getId()))
+        HttpRequest updateRequest = HttpRequest.newBuilder(new URI(url + "/" + updatedUser.getId()))
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(updatedUserJson))
                 .build();
@@ -79,7 +79,7 @@ public class MainClass {
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
 
-        HttpRequest deleteRequest = HttpRequest.newBuilder(new URI(url + userId))
+        HttpRequest deleteRequest = HttpRequest.newBuilder(new URI(url +"/"+ userId))
                 .DELETE()
                 .build();
         HttpResponse<Void> deleteResponse = httpClient.send(deleteRequest, HttpResponse.BodyHandlers.discarding());
