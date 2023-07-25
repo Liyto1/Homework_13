@@ -17,41 +17,41 @@ public class MainClass {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
         newUser(user);
-
+        System.out.println("==========================");
         User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
         try {
             upgradeUser(updatedUser);
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
-
+        System.out.println("==========================");
         int userIdToDelete = 9;
         try {
             deleteUser(userIdToDelete);
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
-
+        System.out.println("==========================");
         try {
             allUsersInfo();
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
-
+        System.out.println("==========================");
         int userId = 5;
         try {
             infoOnId(userId);
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
-
+        System.out.println("==========================");
         String username = "Delphine";
         try {
             infoOnUsername(username);
         } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
         }
-
+        System.out.println("==========================");
 
     }
 
@@ -138,6 +138,22 @@ public class MainClass {
                 System.out.println("Name: " + user.getName());
                 System.out.println("Username: " + user.getUsername());
                 System.out.println("Email: " + user.getEmail());
+
+                User.Address address = user.getAddress();
+                System.out.println("Street: " + address.getStreet());
+                System.out.println("Suite: " + address.getSuite());
+                System.out.println("City: " + address.getCity());
+                System.out.println("Zip Code: " + address.getZipCode());
+
+                User.Geo geo = address.getGeo();
+                System.out.println("Latitude: " + geo.getLat());
+                System.out.println("Longitude: " + geo.getLng());
+
+                User.Company company = user.getCompany();
+                System.out.println("Company Name: " + company.getName());
+                System.out.println("Catch Phrase: " + company.getCatchPhrase());
+                System.out.println("Business: " + company.getBs());
+
                 System.out.println("------------------------");
             }
         } else {
