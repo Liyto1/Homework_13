@@ -149,6 +149,8 @@ public class MainClass {
                 System.out.println("Latitude: " + geo.getLat());
                 System.out.println("Longitude: " + geo.getLng());
 
+                System.out.println("Phone: " + user.getPhone());
+                System.out.println("Website: " + user.getWebsite());
                 User.Company company = user.getCompany();
                 System.out.println("Company Name: " + company.getName());
                 System.out.println("Catch Phrase: " + company.getCatchPhrase());
