@@ -31,20 +31,29 @@ public class User {
 
 
     public int getId() {
+
         return id;
     }
+
     public String getName() {
+
         return name;
     }
+
     public String getUsername() {
+
         return username;
     }
+
     public String getEmail() {
+
         return email;
     }
+
     public Address getAddress() {
         return address;
     }
+
     public String getPhone() {
         return phone;
     }
@@ -56,6 +65,7 @@ public class User {
     public Company getCompany() {
         return company;
     }
+
     public static class Address {
         private String street;
         private String suite;

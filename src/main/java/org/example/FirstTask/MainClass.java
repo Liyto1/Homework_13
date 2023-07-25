@@ -10,7 +10,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 
-
 public class MainClass {
     private static final String url = "https://jsonplaceholder.typicode.com/users";
 
@@ -191,7 +190,7 @@ public class MainClass {
 
     }
 
-    public static  void infoOnUsername(String username) throws  IOException, URISyntaxException, InterruptedException{
+    public static void infoOnUsername(String username) throws IOException, URISyntaxException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
@@ -199,10 +198,10 @@ public class MainClass {
                 .header("Content-Type", "application/json")
                 .GET()
                 .build();
-        HttpResponse<String> response = httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
         int responseCode = response.statusCode();
-        if(responseCode == 200){
+        if (responseCode == 200) {
 
             Gson gson = new Gson();
             User[] users = gson.fromJson(response.body(), User[].class);
@@ -217,7 +216,7 @@ public class MainClass {
             } else {
                 System.err.println("User with username \"" + username + "\" not found.");
             }
-        }else{
+        } else {
             System.err.println("Failed to get user information. Response code: " + responseCode);
         }
     }
