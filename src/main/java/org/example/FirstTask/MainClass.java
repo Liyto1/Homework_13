@@ -16,10 +16,11 @@ public class MainClass {
     private static final String url = "https://jsonplaceholder.typicode.com/users";
 
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
+        System.out.println("=========FirstTask=========");
         User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
         newUser(user);
 
-
+        System.out.println("=========SecondTask=========");
         User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
         try {
             upgradeUser(updatedUser);
@@ -27,7 +28,7 @@ public class MainClass {
             e.printStackTrace();
         }
 
-
+        System.out.println("=========ThirdTask=========");
         int userIdToDelete = 9;
         try {
             deleteUser(userIdToDelete);
@@ -35,7 +36,7 @@ public class MainClass {
             e.printStackTrace();
         }
 
-
+        System.out.println("=========ForthTask=========");
         try {
             allUsersInfo();
         } catch (IOException | InterruptedException | URISyntaxException e) {

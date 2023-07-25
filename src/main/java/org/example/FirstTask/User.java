@@ -8,10 +8,7 @@ public class User {
     private String name;
     private String username;
     private String email;
-    private List<String> address;
-    private String phone;
-    private String website;
-    private List<String> company;
+
 
     public User(String name, String username, String email) {
         this.name = name;
