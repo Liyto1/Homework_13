@@ -18,35 +18,35 @@ public class MainClass {
     private static final String url = "https://jsonplaceholder.typicode.com/users";
 
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
-//        User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
-//        newUser(user);
-//
-//        User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
-//        try {
-//            upgradeUser(updatedUser);
-//        } catch (IOException | InterruptedException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//
-//        int userIdToDelete = 9;
-//        try {
-//            deleteUser(userIdToDelete);
-//        } catch (IOException | InterruptedException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            allUsersInfo();
-//        } catch (IOException | InterruptedException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
+        User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
+        newUser(user);
 
-//        int userId = 5;
-//        try {
-//            infoOnId(userId);
-//        } catch (IOException | InterruptedException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
+        User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
+        try {
+            upgradeUser(updatedUser);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        int userIdToDelete = 9;
+        try {
+            deleteUser(userIdToDelete);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            allUsersInfo();
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        int userId = 5;
+        try {
+            infoOnId(userId);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         String username = "Delphine";
         try {
