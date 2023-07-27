@@ -1,6 +1,7 @@
 package org.example.FirstTask;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.net.URI;
@@ -8,56 +9,80 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 
 public class MainClass {
-    private static final String url = "https://jsonplaceholder.typicode.com/users";
+    private static final String url = "https://jsonplaceholder.typicode.com";
+
 
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
-        User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
-        newUser(user);
-        System.out.println("==========================");
-        User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
+//        System.out.println("***********FirstTask**********");
+//        User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
+//        newUser(user);
+//        System.out.println("==========================");
+//        User updatedUser = new User(10, "Tom Hanks", "TH", "REAlth@gmail.com");
+//        try {
+//            upgradeUser(updatedUser);
+//        } catch (IOException | InterruptedException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("==========================");
+//        int userIdToDelete = 9;
+//        try {
+//            deleteUser(userIdToDelete);
+//        } catch (IOException | InterruptedException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("==========================");
+//        try {
+//            allUsersInfo();
+//        } catch (IOException | InterruptedException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("==========================");
+//        int userId = 5;
+//        try {
+//            infoOnId(userId);
+//        } catch (IOException | InterruptedException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("==========================");
+//        String username = "Delphine";
+//        try {
+//            infoOnUsername(username);
+//        } catch (IOException | InterruptedException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println("***********SecondTask**********");
+        int userId = 1;
+
         try {
-            upgradeUser(updatedUser);
-        } catch (IOException | InterruptedException | URISyntaxException e) {
+            List<Post> posts = getPostsByUser(userId);
+            if (!posts.isEmpty()) {
+//                Post lastPost = posts.get(posts.size() -1);
+                List<Comment> comments = getCommentsForPost(posts.size());
+
+                if (!comments.isEmpty()) {
+                    String fileName = "user-" + userId + "-post-" + posts.size() + "-comments.json";
+                    saveCommentsToJsonFile(comments, fileName);
+                    System.out.println("Comments saved to " + fileName + " successfully.");
+                } else {
+                    System.out.println("No comments found for the last post of user " + userId);
+                }
+            } else {
+                System.out.println("No posts found for user " + userId);
+            }
+        } catch (IOException | URISyntaxException | InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("==========================");
-        int userIdToDelete = 9;
-        try {
-            deleteUser(userIdToDelete);
-        } catch (IOException | InterruptedException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        System.out.println("==========================");
-        try {
-            allUsersInfo();
-        } catch (IOException | InterruptedException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        System.out.println("==========================");
-        int userId = 5;
-        try {
-            infoOnId(userId);
-        } catch (IOException | InterruptedException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        System.out.println("==========================");
-        String username = "Delphine";
-        try {
-            infoOnUsername(username);
-        } catch (IOException | InterruptedException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        System.out.println("==========================");
 
     }
 
     public static void newUser(User user) throws IOException, InterruptedException, URISyntaxException {
 
         String newUser = new Gson().toJson(user);
-        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url))
+        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/users"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(newUser))
                 .build();
@@ -77,7 +102,7 @@ public class MainClass {
 
 
         String updatedUserJson = new Gson().toJson(updatedUser);
-        HttpRequest updateRequest = HttpRequest.newBuilder(new URI(url + "/" + updatedUser.getId()))
+        HttpRequest updateRequest = HttpRequest.newBuilder(new URI(url + "/users/" + updatedUser.getId()))
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(updatedUserJson))
                 .build();
@@ -99,7 +124,7 @@ public class MainClass {
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
 
-        HttpRequest deleteRequest = HttpRequest.newBuilder(new URI(url + "/" + userId))
+        HttpRequest deleteRequest = HttpRequest.newBuilder(new URI(url + "/users/" + userId))
                 .DELETE()
                 .build();
         HttpResponse<Void> deleteResponse = httpClient.send(deleteRequest, HttpResponse.BodyHandlers.discarding());
@@ -117,7 +142,7 @@ public class MainClass {
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
 
-        HttpRequest getAllUsers = HttpRequest.newBuilder(new URI(url))
+        HttpRequest getAllUsers = HttpRequest.newBuilder(new URI(url + "/users"))
                 .header("Content-Type", "application/json")
                 .GET()
                 .build();
@@ -167,7 +192,7 @@ public class MainClass {
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
-        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/" + id))
+        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/users/" + id))
                 .header("Content-Type", "application/json")
                 .GET()
                 .build();
@@ -194,7 +219,7 @@ public class MainClass {
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
-        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "?username=" + username))
+        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/users?username=" + username))
                 .header("Content-Type", "application/json")
                 .GET()
                 .build();
@@ -218,6 +243,44 @@ public class MainClass {
             }
         } else {
             System.err.println("Failed to get user information. Response code: " + responseCode);
+        }
+    }
+
+    public static List<Post> getPostsByUser(int userId) throws IOException, URISyntaxException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/users/" + userId + "/posts"))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        Gson gson = new Gson();
+        return gson.fromJson(response.body(), new TypeToken<List<Post>>() {
+        }.getType());
+
+    }
+    public static List<Comment> getCommentsForPost(int postId) throws IOException, URISyntaxException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+
+        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/posts/" + postId + "/comments"))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        return gson.fromJson(response.body(), new TypeToken<List<Comment>>() {}.getType());
+    }
+    public static void saveCommentsToJsonFile(List<Comment> comments, String fileName) throws IOException {
+        Gson gson = new Gson();
+        String json = gson.toJson(comments);
+
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write(json);
         }
     }
 }
