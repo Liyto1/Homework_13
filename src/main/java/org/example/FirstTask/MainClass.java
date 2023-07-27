@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class MainClass {
@@ -54,17 +55,38 @@ public class MainClass {
 //        } catch (IOException | InterruptedException | URISyntaxException e) {
 //            e.printStackTrace();
 //        }
-        System.out.println("***********SecondTask**********");
-        int userId = 1;
-
+//        System.out.println("***********SecondTask**********");
+//        int userId = 1;
+//
+//        try {
+//            List<Post> posts = getPostsByUser(userId);
+//            if (!posts.isEmpty()) {
+////                Post lastPost = posts.get(posts.size() -1);
+//                List<Comment> comments = getCommentsForPost(posts.size());
+//
+//                if (!comments.isEmpty()) {
+//                    String fileName = "user-" + userId + "-post-" + posts.size() + "-comments.json";
+//                    saveCommentsToJsonFile(comments, fileName);
+//                    System.out.println("Comments saved to " + fileName + " successfully.");
+//                } else {
+//                    System.out.println("No comments found for the last post of user " + userId);
+//                }
+//            } else {
+//                System.out.println("No posts found for user " + userId);
+//            }
+//        } catch (IOException | URISyntaxException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println("***********ThirdTask**********");
+        int userId = 1; // Замініть це на бажаний id користувача
         try {
             List<Post> posts = getPostsByUser(userId);
             if (!posts.isEmpty()) {
-//                Post lastPost = posts.get(posts.size() -1);
-                List<Comment> comments = getCommentsForPost(posts.size());
+                Post lastPost = posts.get(posts.size() - 1);
+                List<Comment> comments = getCommentsForPost(lastPost.getId());
 
                 if (!comments.isEmpty()) {
-                    String fileName = "user-" + userId + "-post-" + posts.size() + "-comments.json";
+                    String fileName = "user-" + userId + "-post-" + lastPost.getId() + "-comments.json";
                     saveCommentsToJsonFile(comments, fileName);
                     System.out.println("Comments saved to " + fileName + " successfully.");
                 } else {
@@ -72,6 +94,19 @@ public class MainClass {
                 }
             } else {
                 System.out.println("No posts found for user " + userId);
+            }
+
+            List<Todo> openTodos = getOpenTodosForUser(userId);
+            if (!openTodos.isEmpty()) {
+                System.out.println("Open Todos for user " + userId + ":");
+                for (Todo todo : openTodos) {
+                    System.out.println("Todo ID: " + todo.getId());
+                    System.out.println("Title: " + todo.getTitle());
+                    System.out.println("Completed: " + todo.isCompleted());
+                    System.out.println("------------------------");
+                }
+            } else {
+                System.out.println("No open Todos found for user " + userId);
             }
         } catch (IOException | URISyntaxException | InterruptedException e) {
             e.printStackTrace();
@@ -260,6 +295,7 @@ public class MainClass {
         }.getType());
 
     }
+
     public static List<Comment> getCommentsForPost(int postId) throws IOException, URISyntaxException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -273,14 +309,58 @@ public class MainClass {
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
         Gson gson = new Gson();
-        return gson.fromJson(response.body(), new TypeToken<List<Comment>>() {}.getType());
+        return gson.fromJson(response.body(), new TypeToken<List<Comment>>() {
+        }.getType());
     }
+
     public static void saveCommentsToJsonFile(List<Comment> comments, String fileName) throws IOException {
         Gson gson = new Gson();
         String json = gson.toJson(comments);
 
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json);
+        }
+    }
+
+
+    public static List<Todo> getOpenTodosForUser(int userId) throws IOException, URISyntaxException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+
+
+        HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url + "/users/" + userId + "/todos"))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        List<Todo> todos = gson.fromJson(response.body(), new TypeToken<List<Todo>>() {
+        }.getType());
+
+        // Фільтруємо задачі, у яких completed = false
+        return todos.stream()
+                .filter(todo -> !todo.isCompleted())
+                .collect(Collectors.toList());
+    }
+
+    public static class Todo {
+        private int id;
+        private String title;
+        private boolean completed;
+
+        public int getId() {
+            return id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public boolean isCompleted() {
+            return completed;
         }
     }
 }
