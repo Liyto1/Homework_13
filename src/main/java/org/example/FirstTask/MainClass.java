@@ -17,7 +17,6 @@ public class MainClass {
     private static final String url = "https://jsonplaceholder.typicode.com";
     private static final int userId = 1;
 
-
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         System.out.println("***********FirstTask**********");
         User user = new User("Tom Johnson", "TJ", "tjOfficeal@gmail.com");
