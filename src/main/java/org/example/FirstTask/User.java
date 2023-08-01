@@ -66,65 +66,6 @@ public class User {
         return company;
     }
 
-    public static class Address {
-        private String street;
-        private String suite;
-        private String city;
-        @SerializedName("zipcode")
-        private String zipCode;
-        private Geo geo;
 
-        public String getStreet() {
-            return street;
-        }
-
-        public String getSuite() {
-            return suite;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public String getZipCode() {
-            return zipCode;
-        }
-
-        public Geo getGeo() {
-            return geo;
-        }
-    }
-
-    public static class Geo {
-        private String lat;
-        private String lng;
-
-        public String getLat() {
-            return lat;
-        }
-
-        public String getLng() {
-            return lng;
-        }
-    }
-
-    public static class Company {
-        private String name;
-        @SerializedName("catchPhrase")
-        private String catchPhrase;
-        private String bs;
-
-        public String getName() {
-            return name;
-        }
-
-        public String getCatchPhrase() {
-            return catchPhrase;
-        }
-
-        public String getBs() {
-            return bs;
-        }
-    }
 }
 
