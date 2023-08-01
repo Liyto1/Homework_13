@@ -168,7 +168,7 @@ public class MainClass {
     public static void allUsersInfo() throws IOException, URISyntaxException, InterruptedException {
         HttpClient httpClient = newHttpClient();
         String newUrl = url + "/users";
-        HttpRequest httpRequest = newHttpRequest(url);
+        HttpRequest httpRequest = newHttpRequest(newUrl);
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
@@ -298,7 +298,7 @@ public class MainClass {
     public static List<Todo> getOpenTodosForUser(int userId) throws IOException, URISyntaxException, InterruptedException {
         HttpClient httpClient = newHttpClient();
         String newUrl = url + "/users/" + userId + "/todos";
-        HttpRequest httpRequest = newHttpRequest(url);
+        HttpRequest httpRequest = newHttpRequest(newUrl);
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
